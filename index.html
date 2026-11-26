@@ -13,7 +13,14 @@
   --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 18px rgba(0,0,0,.05);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:14px}
+html{scroll-behavior:smooth;scroll-padding-top:74px}
+.tabs{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;padding:12px 0 14px;margin:-28px 0 14px;background:linear-gradient(var(--bg) 82%,rgba(243,242,238,0))}
+.tabs a{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 10px;border-radius:12px;border:1px solid var(--line);background:#fff;text-decoration:none;font-weight:700;font-size:14.5px;box-shadow:var(--shadow)}
+.tabs a:hover{border-color:#c9c7bf}
+.tabs a.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.tabs a em{font-style:normal;font-weight:600;font-size:12px;color:var(--muted)}
+.tabs a.on em{color:#c3c3ca}
+.tabs .tb{display:inline-grid;place-items:center;min-width:30px;height:24px;padding:0 6px;border-radius:7px;background:var(--red);color:#fff;font-size:11.5px;font-weight:800}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 
@@ -125,11 +132,17 @@ footer{margin-top:40px;color:var(--muted);font-size:13px;text-align:center}
 <nav class="toc" id="toc"></nav>
 <main id="main"></main>
 <div class="lb" id="lb"></div>
-<script src="data.js"></script>
+<script src="data-gv.js"></script>
+<script src="data-ctv.js"></script>
 <script>
 (function(){
-const G = window.GUIDE;
-if (!G) { document.getElementById('main').innerHTML = '<p>Không đọc được data.js</p>'; return; }
+const ALL = window.GUIDES || {};
+const ORDER = ['gv', 'ctv'].filter(k => ALL[k]);
+const P = ALL[new URLSearchParams(location.search).get('p')] ? new URLSearchParams(location.search).get('p') : ORDER[0];
+const G = ALL[P];
+if (!G) { document.getElementById('main').innerHTML = '<p>Không đọc được dữ liệu (data-gv.js / data-ctv.js)</p>'; return; }
+document.title = G.title;
+const HINT = { gv: 'điểm danh', ctv: 'rút tiền' };
 const KIND = { man: 'Màn hình', hop: 'Hộp thoại / bảng bật lên', th: 'Trường hợp', kq: 'Kết quả sau thao tác' };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const sid = id => 'shot-' + id.replace('.', '-');
@@ -157,8 +170,8 @@ function shotHTML(s) {
 
 /* mục lục */
 const toc = document.getElementById('toc');
-toc.innerHTML = `<div class="brand"><span class="logo">GV</span><div><b>${esc(G.title)}</b><small>${esc(G.product)}</small></div></div>
-  <input id="q" type="search" placeholder="Tìm màn, ví dụ: điểm danh">` +
+toc.innerHTML = `<div class="brand"><span class="logo">${esc(G.badge || 'GV')}</span><div><b>${esc(G.title)}</b><small>${esc(G.product)}</small></div></div>
+  <input id="q" type="search" placeholder="Tìm màn, ví dụ: ${HINT[P] || ''}">` +
   G.sections.map((t, i) => {
     const list = shots.filter(s => s.sec === i);
     if (!list.length) return '';
@@ -175,11 +188,11 @@ document.getElementById('q').addEventListener('input', e => {
 });
 
 /* phần chính */
-const ROUTE = [['1.1', 'Trang chủ'], ['2.7', 'Báo cáo Pre-class'], ['2.8', 'Chuẩn bị lớp'], ['2.11', 'Trong buổi'], ['2.13', 'Điểm danh'], ['2.16', 'Ghi nhận sau lớp'],
-  ['4.1', 'Hàng chờ'], ['4.5', 'Hẹn kèm'], ['5.1', 'Việc cần chấm'], ['5.2', 'Chấm bài'], ['5.7', 'Trả kết quả'], ['2.2', 'Lời mời nhận ca'], ['8.4', 'Nghỉ và dạy thay']]
-  .filter(([id]) => shots.some(s => s.id === id));
+const ROUTE = (G.route || []).filter(([id]) => shots.some(s => s.id === id));
 const main = document.getElementById('main');
-main.innerHTML = `<header class="intro">
+const tabs = ORDER.length > 1 ? `<nav class="tabs" aria-label="Chọn cổng">${ORDER.map(k =>
+  `<a href="?p=${k}" class="${k === P ? 'on' : ''}"><span class="tb">${esc(ALL[k].badge)}</span>${esc(ALL[k].tab)}<em>${ALL[k].shots.length} ảnh</em></a>`).join('')}</nav>` : '';
+main.innerHTML = tabs + `<header class="intro">
     <h1>${esc(G.title)}</h1>
     <p class="sub">${esc(G.product)} · ${shots.length} ảnh chụp tự động từ file bản mẫu ngày ${esc(G.generated)} · dữ liệu trong ảnh là dữ liệu mẫu</p>
     <div class="howto">
@@ -188,7 +201,7 @@ main.innerHTML = `<header class="intro">
       <div><b>Phóng to</b>Bấm vào ảnh để xem cỡ thật. Phím ← → chuyển ảnh, Esc để đóng.</div>
       <div><b>Loại ảnh</b><span class="kinds">${Object.entries(KIND).map(([k, t]) => `<span class="kind k-${k}">${t}</span>`).join('')}</span></div>
     </div>
-    ${ROUTE.length ? `<div class="route"><b>Đi thử một ngày làm việc</b><div class="steps">${ROUTE.map(([id, t], i) =>
+    ${ROUTE.length ? `<div class="route"><b>${esc(G.routeTitle || 'Đi thử')}</b><div class="steps">${ROUTE.map(([id, t], i) =>
       `${i ? '<span class="arr">→</span>' : ''}<a href="#${sid(id)}"><em>${id}</em>${esc(t)}</a>`).join('')}</div></div>` : ''}
   </header>` +
   G.sections.map((t, i) => {
