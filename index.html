@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hướng dẫn Cổng giáo viên</title>
+<style>
+:root{
+  --bg:#F3F2EE; --card:#fff; --ink:#1B1B1F; --muted:#62626B; --line:#E2E0D8; --soft:#F7F6F2;
+  --red:#E1262D; --red-d:#B3141A; --red-bg:#FFF1F1; --red-line:#F6C9CB;
+  --tap:#1F5FD6; --tap-bg:#EAF1FF;
+  --toc:268px;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 18px rgba(0,0,0,.05);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:14px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+
+/* mục lục */
+.toc{position:fixed;inset:0 auto 0 0;width:var(--toc);overflow:auto;background:#fff;border-right:1px solid var(--line);padding:18px 12px 48px}
+.toc .brand{display:flex;align-items:center;gap:10px;padding:2px 8px 12px}
+.toc .brand b{display:block;font-size:15px;line-height:1.25}
+.toc .brand small{color:var(--muted);font-size:12px}
+.toc .logo{flex:none;width:34px;height:34px;border-radius:10px;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:800}
+.toc input{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 11px;font:inherit;font-size:13.5px;background:var(--soft);outline:none}
+.toc input:focus{border-color:#bdbbb2;background:#fff}
+.toc .grp{margin-top:12px}
+.toc .grp > a{display:flex;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13.5px}
+.toc .grp > a span{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--ink);color:#fff;font-size:11.5px}
+.toc ol{list-style:none;margin:2px 0 0;padding:0}
+.toc li a{display:flex;gap:8px;align-items:baseline;padding:4px 8px 4px 10px;border-radius:8px;text-decoration:none;font-size:13px;color:var(--muted)}
+.toc li a:hover{background:var(--soft);color:var(--ink)}
+.toc li a.on{background:var(--red-bg);color:var(--red-d);font-weight:600}
+.toc li a em{font-style:normal;min-width:30px;color:#9b9aa2;font-variant-numeric:tabular-nums;font-size:12px}
+.toc li a i{flex:none;width:7px;height:7px;border-radius:50%;margin-left:auto;align-self:center}
+.toc li.hide,.toc .grp.hide{display:none}
+
+/* phần chính */
+main{margin-left:var(--toc);padding:28px 30px 90px;max-width:calc(1560px + var(--toc))}
+.intro{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 28px;box-shadow:var(--shadow)}
+.intro h1{margin:0;font-size:28px;letter-spacing:-.01em;line-height:1.2}
+.intro .sub{margin:6px 0 0;color:var(--muted)}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:18px}
+.howto div{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#3b3b42}
+.howto b{display:block;color:var(--ink);margin-bottom:3px;font-size:14px}
+.demo-box{display:inline-block;width:28px;height:16px;border:3px solid var(--red);border-radius:5px;vertical-align:-3px;margin-right:4px;position:relative}
+.demo-box::before{content:"1";position:absolute;left:-10px;top:-10px;width:17px;height:17px;border-radius:50%;background:var(--red);color:#fff;font:700 10px/17px "Segoe UI";text-align:center}
+.kinds{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.route{margin-top:18px}
+.route b{font-size:14px}
+.route .steps{display:flex;flex-wrap:wrap;gap:6px 4px;align-items:center;margin-top:8px}
+.route a{display:inline-flex;gap:6px;align-items:center;text-decoration:none;font-size:13px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.route a:hover{border-color:var(--red);color:var(--red-d)}
+.route a em{font-style:normal;color:#9b9aa2;font-size:12px}
+.route .arr{color:#b5b3ab}
+
+section.sec{margin-top:40px}
+section.sec > h2{font-size:22px;margin:0 0 14px;display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
+section.sec > h2 span{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--ink);color:#fff;font-size:16px}
+
+.shot{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px 22px;margin-bottom:22px;box-shadow:var(--shadow)}
+.shot > header{display:flex;gap:12px;align-items:flex-start}
+.sid{flex:none;font-weight:800;font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:4px 9px;font-variant-numeric:tabular-nums;line-height:1.4}
+.shot h3{margin:0;font-size:19px;line-height:1.3}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.kind{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.k-man{background:#EEF0FF;color:#3341B3}
+.k-hop{background:#E6F6EC;color:#17733F}
+.k-th{background:#FFF2DB;color:#965800}
+.k-kq{background:#F3EAFE;color:#6B2BB8}
+.dot-man{background:#3341B3}.dot-hop{background:#17733F}.dot-th{background:#D98A00}.dot-kq{background:#6B2BB8}
+.meta code{font:12px/1 Consolas,ui-monospace,monospace;background:var(--soft);border:1px solid var(--line);padding:4px 7px;border-radius:6px;color:var(--muted)}
+.facts{margin:12px 0 16px;display:grid;gap:3px;font-size:14px;color:#3b3b42}
+.facts b{color:var(--ink);font-weight:600}
+
+.body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;align-items:start}
+.body.small{grid-template-columns:max-content minmax(240px,420px);justify-content:start}
+.fig{position:relative;margin:0;border:1px solid var(--line);border-radius:12px;background:var(--soft);cursor:zoom-in;width:100%;max-width:100%;justify-self:start}
+.fig img{display:block;width:100%;height:auto;border-radius:11px}
+.bx{position:absolute;border:3px solid var(--red);border-radius:8px;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 3px 12px rgba(225,38,45,.25);transition:opacity .15s,box-shadow .15s,background .15s}
+.bx i{position:absolute;left:-17px;top:-17px;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font:700 12px/22px "Segoe UI",sans-serif;text-align:center;font-style:normal;box-shadow:0 0 0 2px #fff,0 2px 6px rgba(0,0,0,.25);z-index:2}
+.bx.bp-r i{left:auto;right:-31px;top:50%;margin-top:-11px}
+.fig.focus .bx{opacity:.18}
+.fig.focus .bx.on{opacity:1;background:rgba(225,38,45,.07);box-shadow:0 0 0 2px #fff,0 0 0 8px rgba(225,38,45,.22);z-index:3}
+.zoomhint{position:absolute;right:10px;bottom:10px;background:rgba(27,27,31,.8);color:#fff;font-size:12px;padding:4px 9px;border-radius:8px;opacity:0;transition:opacity .15s;pointer-events:none;z-index:4}
+.fig:hover .zoomhint{opacity:1}
+
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:4px;position:sticky;top:14px}
+.legend li{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;border:1px solid transparent;font-size:14px;line-height:1.45;cursor:default}
+.legend li:hover,.legend li.on{background:var(--red-bg);border-color:var(--red-line)}
+.legend li > i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;font:700 12.5px/24px "Segoe UI",sans-serif;text-align:center;font-style:normal;margin-top:1px}
+.tap{display:inline-block;font-size:11.5px;font-weight:700;color:var(--tap);background:var(--tap-bg);border-radius:6px;padding:0 6px;margin-right:6px;vertical-align:1px;line-height:1.6}
+
+/* phóng to */
+.lb{position:fixed;inset:0;background:rgba(16,16,20,.97);z-index:50;display:none;flex-direction:column}
+.lb.show{display:flex}
+.lb .bar{display:flex;align-items:center;gap:10px;color:#fff;padding:10px 16px;flex-wrap:wrap}
+.lb .bar .t{font-size:15px;font-weight:700}
+.lb .bar .sp{flex:1}
+.lb button{background:#fff;color:var(--ink);border:0;border-radius:8px;padding:6px 12px;font:600 13px "Segoe UI",sans-serif;cursor:pointer}
+.lb button:hover{background:#ffe9ea}
+.lb .wrap{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 340px;min-height:0}
+.lb .stage{overflow:auto;padding:12px 22px 30px}
+.lb .stage .fig{margin:0 auto;cursor:default;background:#fff;width:auto}
+.lb .stage.fit .fig{width:100%!important}
+.lb .side{overflow:auto;background:#fff;padding:14px}
+.lb .side h4{margin:0 0 4px;font-size:16px}
+.lb .side p{margin:0 0 10px;color:var(--muted);font-size:13.5px}
+.lb .legend{position:static}
+
+footer{margin-top:40px;color:var(--muted);font-size:13px;text-align:center}
+
+@media (max-width:1100px){
+  .toc{position:static;width:auto;border-right:0;border-bottom:1px solid var(--line);max-height:46vh}
+  main{margin-left:0;padding:18px 16px 60px}
+  .body{grid-template-columns:1fr}
+  .legend{position:static}
+  .lb .wrap{grid-template-columns:1fr}
+  .lb .side{max-height:36vh}
+}
+</style>
+</head>
+<body>
+<nav class="toc" id="toc"></nav>
+<main id="main"></main>
+<div class="lb" id="lb"></div>
+<script src="data.js"></script>
+<script>
+(function(){
+const G = window.GUIDE;
+if (!G) { document.getElementById('main').innerHTML = '<p>Không đọc được data.js</p>'; return; }
+const KIND = { man: 'Màn hình', hop: 'Hộp thoại / bảng bật lên', th: 'Trường hợp', kq: 'Kết quả sau thao tác' };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const sid = id => 'shot-' + id.replace('.', '-');
+const fold = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd');
+const shots = G.shots;
+
+function figHTML(s, big) {
+  const small = s.w < 1000;
+  const style = small ? `style="width:${s.w}px"` : (big ? `style="width:${s.w}px"` : '');
+  const boxes = s.anns.map(a => a.boxes.map(b =>
+    `<div class="bx${a.bp ? ' bp-' + a.bp : ''}" data-n="${a.n}" style="left:${b.x}%;top:${b.y}%;width:${b.w}%;height:${b.h}%"><i>${a.n}</i></div>`).join('')).join('');
+  return `<figure class="fig" data-id="${s.id}" ${style}><img src="${s.img}" width="${s.w}" height="${s.h}" alt="${esc(s.title)}" loading="${big ? 'eager' : 'lazy'}">${boxes}${big ? '' : '<span class="zoomhint">Bấm để phóng to</span>'}</figure>`;
+}
+function legendHTML(s) {
+  return `<ol class="legend">${s.anns.map(a => `<li data-n="${a.n}"><i>${a.n}</i><span>${a.a ? '<span class="tap">Bấm</span>' : ''}${esc(a.l)}</span></li>`).join('')}</ol>`;
+}
+function shotHTML(s) {
+  return `<article class="shot" id="${sid(s.id)}" data-id="${s.id}">
+    <header><span class="sid">${s.id}</span><div><h3>${esc(s.title)}</h3>
+      <div class="meta"><span class="kind k-${s.kind}">${KIND[s.kind]}</span><code>${esc(s.scr)}</code></div></div></header>
+    <div class="facts"><div><b>Vào từ:</b> ${esc(s.from)}</div><div><b>Công dụng:</b> ${esc(s.use)}</div></div>
+    <div class="body ${s.w < 1000 ? 'small' : ''}">${figHTML(s, false)}${legendHTML(s)}</div>
+  </article>`;
+}
+
+/* mục lục */
+const toc = document.getElementById('toc');
+toc.innerHTML = `<div class="brand"><span class="logo">GV</span><div><b>${esc(G.title)}</b><small>${esc(G.product)}</small></div></div>
+  <input id="q" type="search" placeholder="Tìm màn, ví dụ: điểm danh">` +
+  G.sections.map((t, i) => {
+    const list = shots.filter(s => s.sec === i);
+    if (!list.length) return '';
+    return `<div class="grp" data-sec="${i}"><a href="#sec-${i}"><span>${i}</span>${esc(t)}</a><ol>${list.map(s =>
+      `<li data-k="${esc(fold(s.id + ' ' + s.title + ' ' + s.scr))}"><a href="#${sid(s.id)}" data-id="${s.id}"><em>${s.id}</em>${esc(s.title)}<i class="dot-${s.kind}" title="${KIND[s.kind]}"></i></a></li>`).join('')}</ol></div>`;
+  }).join('');
+document.getElementById('q').addEventListener('input', e => {
+  const q = fold(e.target.value.trim());
+  toc.querySelectorAll('.grp').forEach(g => {
+    let any = false;
+    g.querySelectorAll('li').forEach(li => { const ok = !q || li.dataset.k.includes(q); li.classList.toggle('hide', !ok); any = any || ok; });
+    g.classList.toggle('hide', !any);
+  });
+});
+
+/* phần chính */
+const ROUTE = [['1.1', 'Trang chủ'], ['2.7', 'Báo cáo Pre-class'], ['2.8', 'Chuẩn bị lớp'], ['2.11', 'Trong buổi'], ['2.13', 'Điểm danh'], ['2.16', 'Ghi nhận sau lớp'],
+  ['4.1', 'Hàng chờ'], ['4.5', 'Hẹn kèm'], ['5.1', 'Việc cần chấm'], ['5.2', 'Chấm bài'], ['5.7', 'Trả kết quả'], ['2.2', 'Lời mời nhận ca'], ['8.4', 'Nghỉ và dạy thay']]
+  .filter(([id]) => shots.some(s => s.id === id));
+const main = document.getElementById('main');
+main.innerHTML = `<header class="intro">
+    <h1>${esc(G.title)}</h1>
+    <p class="sub">${esc(G.product)} · ${shots.length} ảnh chụp tự động từ file bản mẫu ngày ${esc(G.generated)} · dữ liệu trong ảnh là dữ liệu mẫu</p>
+    <div class="howto">
+      <div><b>Khung đỏ có số</b><span class="demo-box"></span> là chỗ cần nhìn. Số khớp với chú thích bên phải ảnh.</div>
+      <div><b>Nhãn <span class="tap">Bấm</span></b>Chú thích có nhãn này là thao tác bấm vào. Rê chuột vào chú thích để làm nổi khung tương ứng.</div>
+      <div><b>Phóng to</b>Bấm vào ảnh để xem cỡ thật. Phím ← → chuyển ảnh, Esc để đóng.</div>
+      <div><b>Loại ảnh</b><span class="kinds">${Object.entries(KIND).map(([k, t]) => `<span class="kind k-${k}">${t}</span>`).join('')}</span></div>
+    </div>
+    ${ROUTE.length ? `<div class="route"><b>Đi thử một ngày làm việc</b><div class="steps">${ROUTE.map(([id, t], i) =>
+      `${i ? '<span class="arr">→</span>' : ''}<a href="#${sid(id)}"><em>${id}</em>${esc(t)}</a>`).join('')}</div></div>` : ''}
+  </header>` +
+  G.sections.map((t, i) => {
+    const list = shots.filter(s => s.sec === i);
+    if (!list.length) return '';
+    return `<section class="sec" id="sec-${i}"><h2><span>${i}</span>${esc(t)}</h2>${list.map(shotHTML).join('')}</section>`;
+  }).join('') +
+  `<footer>Ảnh chụp từ file "Zenford_Website_Ban1_DienAnh (1).html" bằng trình duyệt tự động. Khung đỏ và chú thích do CIT thêm vào.</footer>`;
+
+/* làm nổi khung khi rê chuột */
+function bindHover(root) {
+  root.querySelectorAll('.legend li, .bx').forEach(el => {
+    const scope = el.closest('.shot, .lb');
+    const n = el.dataset.n;
+    el.addEventListener('mouseenter', () => {
+      const fig = scope.querySelector('.fig');
+      fig.classList.add('focus');
+      scope.querySelectorAll('.bx').forEach(b => b.classList.toggle('on', b.dataset.n === n));
+      scope.querySelectorAll('.legend li').forEach(li => li.classList.toggle('on', li.dataset.n === n));
+    });
+    el.addEventListener('mouseleave', () => {
+      scope.querySelector('.fig').classList.remove('focus');
+      scope.querySelectorAll('.bx.on, .legend li.on').forEach(x => x.classList.remove('on'));
+    });
+  });
+}
+bindHover(main);
+
+/* phóng to */
+const lb = document.getElementById('lb');
+let cur = -1, fit = true;
+function openLb(i) {
+  cur = (i + shots.length) % shots.length;
+  const s = shots[cur];
+  lb.innerHTML = `<div class="bar"><span class="t">${s.id} · ${esc(s.title)}</span><span class="kind k-${s.kind}">${KIND[s.kind]}</span><span class="sp"></span>
+      <button data-a="prev">← Ảnh trước</button><button data-a="next">Ảnh sau →</button><button data-a="fit">${fit ? 'Cỡ thật' : 'Vừa màn hình'}</button><button data-a="close">Đóng (Esc)</button></div>
+    <div class="wrap"><div class="stage ${fit ? 'fit' : ''}">${figHTML(s, true)}</div>
+      <aside class="side"><h4>${esc(s.title)}</h4><p>${esc(s.use)}</p>${legendHTML(s)}</aside></div>`;
+  lb.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  bindHover(lb);
+}
+function closeLb() { lb.classList.remove('show'); lb.innerHTML = ''; document.body.style.overflow = ''; cur = -1; }
+main.addEventListener('click', e => {
+  const f = e.target.closest('.fig');
+  if (!f) return;
+  openLb(shots.findIndex(s => s.id === f.dataset.id));
+});
+lb.addEventListener('click', e => {
+  const b = e.target.closest('button[data-a]');
+  if (b) {
+    const a = b.dataset.a;
+    if (a === 'close') closeLb();
+    if (a === 'prev') openLb(cur - 1);
+    if (a === 'next') openLb(cur + 1);
+    if (a === 'fit') { fit = !fit; openLb(cur); }
+    return;
+  }
+  if (e.target === lb || e.target.classList.contains('stage')) closeLb();
+});
+document.addEventListener('keydown', e => {
+  if (cur < 0) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowRight') openLb(cur + 1);
+  if (e.key === 'ArrowLeft') openLb(cur - 1);
+});
+
+/* đánh dấu mục đang xem */
+const links = new Map([...toc.querySelectorAll('li a')].map(a => [a.dataset.id, a]));
+let last = null;
+const io = new IntersectionObserver(es => {
+  es.forEach(en => {
+    if (!en.isIntersecting) return;
+    const a = links.get(en.target.dataset.id);
+    if (!a || a === last) return;
+    if (last) last.classList.remove('on');
+    a.classList.add('on'); last = a;
+    const r = a.getBoundingClientRect(), tr = toc.getBoundingClientRect();
+    if (r.top < tr.top + 60 || r.bottom > tr.bottom - 20) toc.scrollTop += r.top - tr.top - tr.height / 2;
+  });
+}, { rootMargin: '-15% 0px -70% 0px' });
+main.querySelectorAll('.shot').forEach(s => io.observe(s));
+})();
+</script>
+</body>
+</html>
